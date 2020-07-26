@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css" />
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="container">
+        <div id="top-row" class="top-row">
+            <div class="btn-container">
+                <button class="btn new" id="New">New</button>
+                <button class="btn " id="Save">Save</button>
+            </div>
+            <div id="tabs-row" class="tabs-container">
+                Tabs
+            </div>
+        </div>
+        <div id="main-container" class="main-container">
+            <div id="file-explorer" class="file-explorer">File Explorer
+                <div id="tree"></div>
+            </div>
+            <div id="content-container" class="content">
+                <div id="text-editor" class="textbox">
+                    <div id="editor" ></div>
+                </div>
+                <div id="terminal" class="terminal">Terminal</div>
+            </div>
+        </div>
+    </div>
+    <script>
+        
+		
+		const amdLoader = require('./node_modules/monaco-editor/min/vs/loader.js');
+		const amdRequire = amdLoader.require;
+		const amdDefine = amdLoader.require.define;
+
+		function uriFromPath(_path) {
+			var pathName = path.resolve(_path).replace(/\\/g, '/');
+			if (pathName.length > 0 && pathName.charAt(0) !== '/') {
+				pathName = '/' + pathName;
+			}
+			return encodeURI('file://' + pathName);
+		}
+
+		amdRequire.config({
+			baseUrl: './node_modules/monaco-editor/min'
+		});
+
+		// workaround monaco-css not understanding the environment
+		self.module = undefined;
+
+		amdRequire(['vs/editor/editor.main'], function() {
+			var editor = monaco.editor.create(document.getElementById('editor'), {
+				value: [
+					'function x() {',
+					'\tconsole.log("Hello world!");',
+					'}'
+				].join('\n'),
+				language: 'javascript'
+			});
+		});
+	
+    </script>
+</body>
+
+<script src="./index.js"></script>
+
+</html>
