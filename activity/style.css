@@ -95,4 +95,33 @@ body,html{
 #editor{
     height: 100%;
 }
+.tabs-container{
+    width: calc(100vw - 15rem);
+    background: #363030;
+    height: 100%;
+    display: flex;
+    text-align: center;
+    align-items: center;
+    padding-left: 10px;
+    padding-right: 10px;
+    overflow: auto;
+}
+
+.tab{
+    display: flex;
+    background-color: slategrey;
+    height: 75%;
+    align-items: center;
+    margin-right: 5px;
+    padding: 12px;
+    justify-content: space-between;
+    border-radius: 20px;
+}
+.fa-times{
+    align-self: start;
+    /* font-size:10px; */
+}
+.tab-name{
+
+}
   
