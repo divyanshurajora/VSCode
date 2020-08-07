@@ -55,7 +55,7 @@ body,html{
 }
 .main-container{
     height: calc(100vh - 87px );
-    background: rebeccapurple;
+    /* background: rebeccapurple; */
     display: flex;
 }
 .file-explorer{
@@ -74,10 +74,15 @@ body,html{
 .textbox{
     height: 69%;
     border: 1px solid;
+    box-shadow: 0 1rem 3rem rgb(92, 90, 90);
 }
-.terminal{
+.terminal-container{
     height: 28%;
-    border: 1px solid blue;
+    border: 1px solid;
+    width: 100%;
+    box-shadow: 0 1rem 3rem rgb(101, 94, 107);
+    position: relative;
+    z-index:3;
 }
 ::-webkit-scrollbar {
     height: 5px;
@@ -124,4 +129,16 @@ body,html{
 .tab-name{
 
 }
-  
+.terminal{
+    height: 100%;
+    width: 100%;
+}  
+.jstree-default .jstree-clicked{
+    background: inherit;
+}
+.jstree-default .jstree-clicked {
+    background: inherit;
+}
+.jstree-default .jstree-hovered {
+    background: inherit;
+}

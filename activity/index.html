@@ -7,8 +7,10 @@
     <title>Document</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css" />
+    <link rel="stylesheet" href="node_modules/xterm/css/xterm.css">
     <link rel="stylesheet" href="style.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/js/all.min.js"></script>
+    
 </head>
 
 <body>
@@ -17,6 +19,7 @@
             <div class="btn-container">
                 <button class="btn new" id="New">New</button>
                 <button class="btn " id="Save">Save</button>
+                <button class="btn" id="theme">Switch</button>
             </div>
             <div id="tabs-row" class="tabs-container">
                 
@@ -30,10 +33,13 @@
                 <div id="text-editor" class="textbox">
                     <div id="editor" ></div>
                 </div>
-                <div id="terminal" class="terminal">Terminal</div>
+                <div class="terminal-container">
+                    <div id="terminal" class="terminal"></div>
+                </div>
             </div>
         </div>
     </div>
+    
     <!-- Monaco Editor implementation -->
     <!-- <script>
         

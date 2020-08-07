@@ -2,10 +2,16 @@ const $ = require("jquery");
 require("jstree");
 const path = require("path");
 const fs = require("fs");
+const pty = require('node-pty');
+const os = require('os')
+const Terminal = require('xterm').Terminal;
+const {FitAddon} = require('xterm-addon-fit');
+
 let myMonaco, editor;
 let tabArr = {};
 
 $(document).ready(async function(){
+    
     editor = await createEditor();
 
     let pPath = process.cwd();  //pPath - parent path
@@ -23,7 +29,10 @@ $(document).ready(async function(){
     $('#tree').jstree({
         "core" : {
             "check_callback" : true,
-            "data": data
+            "data": data,
+            "themes": {
+                "icons": false
+            }
         }
     }).on("open_node.jstree",function (e, data) {  
 
@@ -46,6 +55,44 @@ $(document).ready(async function(){
             setData(fPath);
             createTab(fPath)
         }
+    })
+
+    const shell = process.env[os.platform() === 'win32' ? 'COMSPEC' : 'SHELL'];
+    const ptyProcess = pty.spawn(shell, [], {
+       name: 'xterm-color',
+       cols: 80,
+       rows: 30,
+       cwd: process.cwd(),
+       env: process.env
+    });
+
+    // Initialize xterm.js and attach it to the DOM
+    const xterm = new Terminal();
+    const fitAddon = new FitAddon();
+    xterm.loadAddon(fitAddon);
+    xterm.setOption('theme', {
+        background: "rebeccapurple",
+    });
+    
+    xterm.open(document.getElementById('terminal'));
+
+    // Setup communication between xterm.js and node-pty
+    xterm.onData(function (data){
+        ptyProcess.write(data);
+    })
+    ptyProcess.on('data', function (data) {
+        xterm.write(data);
+    });
+    fitAddon.fit();
+
+    let isDark = false;
+    $("#theme").on("click", function(){
+        if(isDark){
+            myMonaco.editor.setTheme("vs");
+        }else{
+            myMonaco.editor.setTheme("vs-dark");
+        }
+        isDark = !isDark;
     })
 })
 
@@ -75,14 +122,6 @@ function createEditor(){
 		const amdRequire = amdLoader.require;
 		const amdDefine = amdLoader.require.define;
 
-		function uriFromPath(_path) {
-			var pathName = path.resolve(_path).replace(/\\/g, '/');
-			if (pathName.length > 0 && pathName.charAt(0) !== '/') {
-				pathName = '/' + pathName;
-			}
-			return encodeURI('file://' + pathName);
-		}
-
 		amdRequire.config({
 			baseUrl: './node_modules/monaco-editor/min'
 		});
@@ -97,7 +136,8 @@ function createEditor(){
                         '\tconsole.log("Hello world!");',
                         '}'
                     ].join('\n'),
-                    language: 'javascript'
+                    language: 'javascript',
+                    automaticLayout: true
                 });
                 myMonaco = monaco;
                 resolve(editor);
@@ -147,3 +187,4 @@ function handleClose(elem) {
         setData(fPath);
     }
 }
+
